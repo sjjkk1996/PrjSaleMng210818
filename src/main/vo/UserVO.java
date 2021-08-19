@@ -28,7 +28,7 @@ public class UserVO {
         this.id = id;
     }
     //생성자, demo_users에 insert할 때 사용
-    public UserVO(String userName, String password, String id) {
+    public UserVO(String userName, String id, String password) {
         this.userName = userName;
         this.password = password;
         this.id = id;
