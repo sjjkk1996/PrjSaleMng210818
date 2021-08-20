@@ -14,7 +14,7 @@ public class DaoSet {
     ResultSet rs;// 쿼리를 응답받을 때 결과값을 담기위한 객체
 
     public Connection connDB() throws SQLException {
-        String driver = "jdbc:oracle:thin:@119.198.129.189:1521:xe";
+        String driver = "jdbc:oracle:thin:@localhost:1521:xe";
         String user = "db7", pass = "1234";
         conn = DriverManager.getConnection(driver,user,pass);
         return conn;
@@ -26,4 +26,6 @@ public class DaoSet {
             if(pstmt!=null)pstmt.close();if(rs != null) rs.close();
         } catch (SQLException e) {e.printStackTrace();}
     }
+
+
 }

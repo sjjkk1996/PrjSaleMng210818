@@ -19,7 +19,7 @@ public class MainFrm extends BasicFrm{
     private JPanel[] pnls;
 
     public MainFrm() {
-        super(900,600, "님 환영합니다.");
+        super(950,570, "님 환영합니다.");
         String msg = MainController.getInstance().getSession().getUserName()+"님 환영 합니다.";
         setTitle(msg);
     }
@@ -39,6 +39,7 @@ public class MainFrm extends BasicFrm{
         pnlCenter.setBackground(Color.pink); //생략 가능 코드
         for (int i = 0; i < lbArr.length; i++) {
             icons[i] = new ImageIcon("images/"+menus[i]+".png");
+            icons[i] = resizeImg(icons[i]);
             lbArr[i] = new JLabel(icons[i]);
             pnlNorth.add(lbArr[i]);
             pnlCenter.add(menus[i], pnls[i]);
@@ -65,5 +66,14 @@ public class MainFrm extends BasicFrm{
 
         add(pnlNorth,"North");
         add(pnlCenter,"Center");
+    }
+    private ImageIcon resizeImg(ImageIcon img){
+        int imgW = img.getIconWidth();
+        int imgH = img.getIconHeight();
+        int dynamicH = imgH*40/imgW;
+        Image image = img.getImage();
+        Image newImg = image.getScaledInstance(40, dynamicH,
+                java.awt.Image.SCALE_SMOOTH);
+        return img = new ImageIcon(newImg);
     }
 }

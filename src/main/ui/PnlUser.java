@@ -4,6 +4,7 @@ import dao.DaoUser;
 import vo.UserVO;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,9 +16,15 @@ public class PnlUser extends JPanel {
     private JPasswordField rePw;
     private JTextField tfSearch;
     private JTable table;
+    private DefaultTableModel model;
+
     public PnlUser() {
         setLayout(null);
         DaoUser dao = new DaoUser();
+        model = new DefaultTableModel(
+                new String[] {"USER_ID","ID","이름","입사일","QUOTA","상품유무",
+                        "퇴사일","관리자여부"},0);
+
         JLabel lblNewLabel = new JLabel("\uC0AC\uC6A9\uC790 \uB4F1\uB85D");
         lblNewLabel.setFont(new Font("맑은 고딕", Font.PLAIN, 30));
         lblNewLabel.setBounds(74, 10, 161, 58);
@@ -73,7 +80,13 @@ public class PnlUser extends JPanel {
                 if(pw.equals(""))return;
                 if(rePass.equals(""))return;
                 if(!pw.equals(rePass))return;
-                dao.registUser(new UserVO(name, id, pw));
+                if(dao.registUser(new UserVO(name, id, pw))){
+                    JOptionPane.showMessageDialog(null,"등록에 성공했습니다.");
+                }else{
+                    JOptionPane.showMessageDialog(null,"등록에 실패했습니다.");
+                }
+
+
             }
         });
         btnRegist.setBounds(98, 349, 118, 23);
@@ -81,23 +94,35 @@ public class PnlUser extends JPanel {
 
         JLabel lblNewLabel_5 = new JLabel("\uC0AC\uC6A9\uC790 \uBAA9\uB85D");
         lblNewLabel_5.setFont(new Font("맑은 고딕", Font.PLAIN, 30));
-        lblNewLabel_5.setBounds(417, 10, 161, 58);
+        lblNewLabel_5.setBounds(323, 10, 161, 58);
         add(lblNewLabel_5);
 
         tfSearch = new JTextField();
-        tfSearch.setBounds(417, 101, 161, 21);
+        tfSearch.setBounds(323, 101, 161, 21);
         add(tfSearch);
         tfSearch.setColumns(10);
 
         JButton btnSearch = new JButton("\uC870\uD68C");
-        btnSearch.setBounds(592, 100, 97, 23);
+
+        btnSearch.setBounds(499, 100, 97, 23);
         add(btnSearch);
 
+        table = new JTable(new DefaultTableModel());
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(417, 132, 441, 258);
+        scrollPane.setBounds(323, 132, 565, 258);
         add(scrollPane);
-
-        table = new JTable();
         scrollPane.setViewportView(table);
+
+        btnSearch.addActionListener(e->{
+//            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            //여기서 while문은 테이블에 중복적으로 데이터들이 쌓이는 것을 방지해주는 코드
+            while (table.getRowCount()>0){
+                model.removeRow(0);//0번째로하면 맨위줄부터 순차적으로 삭제를하는데 while문으로 계속해서 반복하기때문에 결국 남는건없어진다.
+            }
+            String srch = tfSearch.getText();
+            model = dao.getUserList(model, srch);
+            table.setModel(model);
+            model.fireTableDataChanged();
+        });
     }
 }
