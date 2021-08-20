@@ -1,107 +1,105 @@
 package ui;
 
-import javax.swing.*;
-
 import dao.DaoCustomer;
-import dao.DaoItems;
 import dao.DaoProduct;
-import javafx.scene.control.ComboBox;
 import org.jdatepicker.JDatePicker;
-import java.awt.Font;
+
+import javax.swing.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PnlSale extends JPanel {
     private JDatePicker dPic;
+    private JTextField tfSearch;
     private JTable table;
-    private JTextField textField;
-    private JTextField textField_1;
-    private JComboBox cbCate;
-    private JComboBox cbCustomer;
+
 
     public PnlSale() {
         setLayout(null);
-        dPic = new JDatePicker();
-        dPic.setBounds(90, 43, 250, 21);
-        add(dPic);
 
+        JLabel lbDate = new JLabel("\uC804\uD45C \uC791\uC131\uC77C");
+        lbDate.setBounds(12, 10, 64, 15);
+        add(lbDate);
 
-        JLabel lblNewLabel = new JLabel("\uC804\uD45C \uC791\uC131\uC77C");
-        lblNewLabel.setFont(lblNewLabel.getFont().deriveFont(lblNewLabel.getFont().getStyle() | Font.BOLD));
-        lblNewLabel.setBounds(21, 43, 75, 21);
-        add(lblNewLabel);
+        JLabel lbCusName = new JLabel("    \uACE0\uAC1D\uBA85");
+        lbCusName.setBounds(345, 10, 57, 15);
+        add(lbCusName);
 
-        JLabel lblNewLabel_1 = new JLabel("\uACE0\uAC1D\uBA85");
-        lblNewLabel_1.setFont(lblNewLabel.getFont().deriveFont(lblNewLabel.getFont().getStyle() | Font.BOLD));
-        lblNewLabel_1.setBounds(346, 43, 49, 21);
-        add(lblNewLabel_1);
+        JComboBox cbCate = new JComboBox(new DaoProduct().getCate());
+        cbCate.setBounds(12, 41, 130, 19);
+        add(cbCate);
+
+        JComboBox cbCusName = new JComboBox(new DaoCustomer().getCustAll());
+        cbCusName.setBounds(411, 8, 188, 19);
+        add(cbCusName);
+
+        JLabel lbPdImg = new JLabel("제품 이미지");
+        lbPdImg.setBounds(715, 43, 72, 15);
+        add(lbPdImg);
+
+        DaoProduct daoProduct = new DaoProduct();
+        JComboBox cbProd = new JComboBox(daoProduct.getProdList(cbCate.getSelectedItem().toString()));
+        cbProd.setBounds(147, 41, 209, 19);
+        add(cbProd);
+
+        tfSearch = new JTextField();
+        tfSearch.setBounds(463, 41, 136, 21);
+        add(tfSearch);
+        tfSearch.setColumns(10);
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(21, 103, 591, 294);
+        scrollPane.setBounds(12, 70, 587, 280);
         add(scrollPane);
 
         table = new JTable();
         scrollPane.setColumnHeaderView(table);
 
-        JList list = new JList();
-        list.setBounds(189, 81, 1, 1);
-        add(list);
+        JButton btnAdd = new JButton("\uCD94\uAC00");
+        btnAdd.setBounds(360, 360, 60, 23);
+        add(btnAdd);
 
-        textField = new JTextField();
-        textField.setBounds(515, 79, 97, 21);
-        add(textField);
-        textField.setColumns(10);
+        JButton btnCancle = new JButton("\uCDE8\uC18C");
+        btnCancle.setBounds(423, 360, 64, 23);
+        add(btnCancle);
 
-        textField_1 = new JTextField();
-        textField_1.setColumns(10);
-        textField_1.setBounds(450, 79, 62, 21);
-        add(textField_1);
+        JButton btnPay = new JButton("\uACB0\uC81C");
+        btnPay.setBounds(490, 360, 109, 23);
+        add(btnPay);
 
-        JButton btnNewButton = new JButton("\uACB0\uC81C");
-        btnNewButton.setBounds(515, 407, 97, 23);
-        add(btnNewButton);
+        JTextPane tpSum = new JTextPane();
+        tpSum.setBackground(Color.GRAY);
+        tpSum.setBounds(12, 360, 243, 30);
+        add(tpSum);
 
-        JButton btnNewButton_1 = new JButton("\uC0AD\uC81C");
-        btnNewButton_1.setBounds(415, 407, 97, 23);
-        add(btnNewButton_1);
+        JTextPane tpPrice = new JTextPane();
+        tpPrice.setBounds(365, 41, 92, 19);
+        add(tpPrice);
+        setLayout(null);
 
-        JButton btnNewButton_2 = new JButton("\uCD94\uAC00");
-        btnNewButton_2.setBounds(316, 407, 97, 23);
-        add(btnNewButton_2);
+        JDatePicker dPic = new JDatePicker();
+        dPic.setBounds(76, 6, 262, 26);
+        add(dPic);
 
-        JLabel lblNewLabel_2 = new JLabel("\uC81C\uD488 \uC774\uBBF8\uC9C0");
-        lblNewLabel_2.setFont(lblNewLabel_2.getFont().deriveFont(lblNewLabel_2.getFont().getStyle() | Font.BOLD));
-        lblNewLabel_2.setBounds(726, 81, 80, 15);
-        add(lblNewLabel_2);
+        JLabel lblNewLabel = new JLabel();
+        lblNewLabel.setBounds(611, 71, 327, 280);
+        add(lblNewLabel);
 
-        JComboBox comboBox = new JComboBox(new DaoCustomer().getCustAll());
-        comboBox.setBounds(390, 43, 222, 21);
-        add(comboBox);
 
-        JComboBox comboBox_1 = new JComboBox(new DaoProduct().getCate());
-        comboBox_1.setBounds(21, 79, 140, 21);
-        add(comboBox_1);
-
-        JComboBox comboBox_2 = new JComboBox(new DaoItems().getItem());
-        comboBox_2.setBounds(162, 79, 215, 21);
-        add(comboBox_2);
-
-        JTextPane textPane = new JTextPane();
-        textPane.setBounds(21, 407, 147, 21);
-        add(textPane);
-
-        JLabel lblNewLabel_3 = new JLabel("");
-        lblNewLabel_3.setBounds(624, 104, 314, 294);
-        add(lblNewLabel_3);
         cbCate.addActionListener(new ActionListener() {
+            Object[] oArr = null;
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object[] arr = daoProduct.getprodList(cbCate.getSelectedItem().toString());
-                cbProd = new JComboBox(arr);
+                String cateW = cbCate.getSelectedItem().toString();
+                cbProd.removeAllItems();
+                try {
+                    oArr = daoProduct.getProdList(cateW);
+                } catch (Exception e1) {}
+                if(oArr.length>0)
+                    for (int i = 0; i < oArr.length; i++) {
+                        cbProd.addItem(oArr[i]);
+                    }
             }
         });
     }
-
-
-    }
-
+}
